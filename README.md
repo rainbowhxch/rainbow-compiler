@@ -1,6 +1,6 @@
 # rainbow-compiler
-Something about compiler.
+There are something about compiler.
 
 ## Something implemented
-[X] Lexical analysis
-[X] recursive descent parser
+- [X] Lexical analysis
+- [X] recursive descent parser
