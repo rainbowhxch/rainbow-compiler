@@ -2,5 +2,5 @@
 There are something about compiler.
 
 ## Something implemented
-- [X] Lexical analysis
+- [X] Lexical analysis scanner
 - [X] recursive descent parser

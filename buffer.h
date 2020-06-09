@@ -20,6 +20,10 @@ extern void init_buffer(const char *filename);
 
 extern char next_char();
 
+extern char current_char();
+
+extern void advance();
+
 extern void retract();
 
 extern void print_info();

@@ -4,12 +4,15 @@
 int main(int argc, char *argv[])
 {
     init_buffer("pl0.txt");
+    print_info();
     pair<State, int> a;
-    while (true) {
-        a = next_lexical();
+    int n = 10;
+    while (n--) {
+	next_lexical();
+        a = cur_lexical();
         if (a.first == State::FIN)
             break;
-        cout << "<" << a.first << ", " << a.second << ">" << endl;
+        cout << "<" << (int)a.first << ", " << a.second << ">" << endl;
     }
     return 0;
 }

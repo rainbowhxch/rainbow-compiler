@@ -13,24 +13,9 @@
 
 enum class State : unsigned int
 {
-    ERROR,
-    FIN,
-    KEY,
-    IDENT,
-    NUMBER,
-    PLUS,
-    MINUS,
-    PRO,
-    DEV,
-    LBRA,
-    RBRA,
-    LESS,
-    LARGE,
-    EQUAL,
-    COMMA,
-    DOT,
-    SEM,
-    ODD
+    ERROR, FIN, KEY, IDENT, NUMBER, PLUS, MINUS,
+    PRO, DEV, LBRA, RBRA, LESS, LARGE, EQUAL,COMMA,
+    DOT, SEM, ODD
 };
 
 using std::string;
@@ -38,6 +23,8 @@ using std::vector;
 using std::set;
 using std::pair;
 
-extern const pair<State, int> next_lexical();
+extern void next_lexical();
+
+extern const pair<State, int> cur_lexical();
 
 #endif /* __LEXICAL_ANALYSIS_H_ */
