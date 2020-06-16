@@ -1,5 +1,5 @@
-#include "recursive_descent.h"
-#include "lexical_analysis.h"
+#include "../include/recursive_descent.h"
+#include "../include/lexical_analysis.h"
 
 void E()
 {

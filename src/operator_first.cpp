@@ -1,5 +1,5 @@
-#include "operator_first.h"
-#include "lexical_analysis.h"
+#include "../include/operator_first.h"
+#include "../include/lexical_analysis.h"
 #include <cstdlib>
 
 static void init_opertor_order()
@@ -90,19 +90,26 @@ pair<State, int> compose(int l, int r)
 {
     int len = r - l + 1;
     if (len == 1) {
-	if (s[l].first == State::PLUS)
-	    return {State::NUMBER, s[l-1].second + s[l+1].second};
+	double first_val = get_num(s[l-1].second);
+	double second_val = get_num(s[l-1].second);
+
+	if (s[l].first == State::PLUS) {
+	    return {State::NUMBER, add_num(first_val + second_val)};
+	}
 	else if (s[l].first == State::MINUS)
-	    return {State::NUMBER, s[l-1].second - s[l+1].second};
+	    return {State::NUMBER, add_num(first_val - second_val)};
 	else if (s[l].first == State::PRO)
-	    return {State::NUMBER, s[l-1].second * s[l+1].second};
+	    return {State::NUMBER, add_num(first_val * second_val)};
 	else if (s[l].first == State::DEV)
-	    return {State::NUMBER, s[l-1].second / s[l+1].second};
+	    return {State::NUMBER, add_num(first_val / second_val)};
     } else if (len == 3) {
 	return s[l+1];
     } else {
 	error("error compose!");
     }
+
+    /* just for removing the warning */
+    return {State::FIN, -1};
 }
 
 extern void operator_first()
@@ -112,6 +119,13 @@ extern void operator_first()
     do {
 	next_lexical();
 	cur_state = cur_lexical();
+	while (!is_final_state(cur_state.first)) {
+	    k += 1;
+	    s[k] = cur_state;
+	    next_lexical();
+	    cur_state = cur_lexical();
+	}
+
 	if (is_final_state(s[k].first))
 	    j = k;
 	else
@@ -123,7 +137,7 @@ extern void operator_first()
 		    j -= 1;
 		else
 		    j -= 2;
-	    } while (order_less_than(s[j].first, prev_equal_state.first) || \
+	    } while (order_large_than(s[j].first, prev_equal_state.first) || \
 		    order_equal(s[j].first, prev_equal_state.first));
 	    /* compose */
 	    int l = j+1, r = k;
@@ -139,6 +153,8 @@ extern void operator_first()
 	    error("error order!");
 	}
     } while (cur_state.first != State::FIN);
+
+    cout << "The result is: " << get_num(s[k-1].second);
 }
 
 static void error(string msg)

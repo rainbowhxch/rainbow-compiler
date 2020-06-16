@@ -1,15 +1,21 @@
 CXXFLAGS = -std=c++2a
-OBJ = test_rec.o test_lex.o buffer.o lexical_analysis.o recursive_descent.o
-OBJ_LEX = test_lex.o buffer.o lexical_analysis.o
-OBJ_REC = test_rec.o buffer.o lexical_analysis.o recursive_descent.o
-TARGET = test_lex test_rec
+TEST_DIR = test/
+SRC_DIR = src/
+OBJ = $(TEST_DIR)test_rec.o $(TEST_DIR)test_lex.o $(TEST_DIR)/test_ope.o $(SRC_DIR)buffer.o $(SRC_DIR)lexical_analysis.o $(SRC_DIR)recursive_descent.o
+OBJ_LEX = $(TEST_DIR)test_lex.o $(SRC_DIR)buffer.o $(SRC_DIR)lexical_analysis.o
+OBJ_REC = $(TEST_DIR)test_rec.o $(SRC_DIR)buffer.o $(SRC_DIR)lexical_analysis.o $(SRC_DIR)recursive_descent.o
+OBJ_OPE = $(TEST_DIR)test_ope.o $(SRC_DIR)buffer.o $(SRC_DIR)lexical_analysis.o $(SRC_DIR)operator_first.o
+TARGET = $(TEST_DIR)test_lex $(TEST_DIR)test_rec $(TEST_DIR)test_ope
 
 all: $(TARGET)
 
-test_lex: $(OBJ_LEX)
+$(TEST_DIR)test_lex: $(OBJ_LEX)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-test_rec: $(OBJ_REC)
+$(TEST_DIR)test_rec: $(OBJ_REC)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+$(TEST_DIR)test_ope: $(OBJ_OPE)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 .PHONY: all clean

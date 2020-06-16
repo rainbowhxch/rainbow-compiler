@@ -1,10 +1,8 @@
-#include "buffer.h"
-#include "lexical_analysis.h"
-#include "recursive_descent.h"
+#include "../include/recursive_descent.h"
 
 int main()
 {
-    init_buffer("pl0.txt");
+    init_buffer("pl0_rec.txt");
     next_lexical();
     E();
 

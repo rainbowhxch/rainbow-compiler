@@ -1,5 +1,6 @@
-#include "lexical_analysis.h"
-#include "buffer.h"
+#include "../include/lexical_analysis.h"
+#include "../include/buffer.h"
+#include <string>
 
 static string lexical;
 static vector<string> idents;
@@ -7,6 +8,28 @@ static vector<string> nums;
 static const set<string> keys = { "begin", "end", "if", "then", "while", "do", \
                              "const", "var", "call", "procedure", "odd" };
 static pair<State, int> _state;
+
+extern double get_num(int idx)
+{
+    return stof(nums[idx]);
+}
+
+extern int add_num(double val)
+{
+    nums.push_back(std::to_string(val));
+    return nums.size()-1;
+}
+
+extern string get_ident(int idx)
+{
+    return idents[idx];
+}
+
+extern int add_ident(string val)
+{
+    idents.push_back(val);
+    return idents.size()-1;
+}
 
 static const char _next_char()
 {

@@ -1,9 +1,8 @@
-#include "buffer.h"
-#include "lexical_analysis.h"
+#include "../include/lexical_analysis.h"
 
 int main(int argc, char *argv[])
 {
-    init_buffer("pl0.txt");
+    init_buffer("pl0_lex.txt");
     print_info();
     pair<State, int> a;
     int n = 10;

@@ -23,6 +23,13 @@ using std::vector;
 using std::set;
 using std::pair;
 
+extern double get_num(int idx);
+extern int add_num(double val);
+
+extern string get_ident(int idx);
+extern int add_ident(string val);
+
+
 extern void next_lexical();
 
 extern const pair<State, int> cur_lexical();
