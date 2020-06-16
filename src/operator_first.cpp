@@ -58,7 +58,7 @@ static void init_opertor_order()
     _operator_order[(int)State::FIN][(int)State::DEV] = -1;
     _operator_order[(int)State::FIN][(int)State::LBRA] = -1;
     _operator_order[(int)State::FIN][(int)State::RBRA] = 2;
-    _operator_order[(int)State::FIN][(int)State::FIN] = 2;
+    _operator_order[(int)State::FIN][(int)State::FIN] = 0;
 }
 
 static bool order_less_than(State a, State b)
@@ -80,30 +80,42 @@ static bool is_final_state(State s)
 {
     if (s == State::PLUS || s == State::MINUS || \
 	s == State::PRO || s == State::DEV || \
-	s == State::LBRA || s == State::RBRA)
+	s == State::LBRA || s == State::RBRA || \
+	s == State::FIN)
 	return true;
     else
 	return false;
 }
 
+void print_info_ope()
+{
+    _operator_order[(int)State::PLUS][(int)State::LBRA] = -1;
+    _operator_order[(int)State::PLUS][(int)State::RBRA] = 1;
+    cout << _operator_order[(int)State::PLUS][(int)State::RBRA] << endl;
+    cout << _operator_order[(int)State::PLUS][(int)State::LBRA] << endl;
+}
+
 pair<State, int> compose(int l, int r)
 {
     int len = r - l + 1;
-    if (len == 1) {
-	double first_val = get_num(s[l-1].second);
-	double second_val = get_num(s[l-1].second);
+    int m = l+1;
+    if (len == 3) {
+	if (s[m].first == State::NUMBER)
+	    return s[m];
 
-	if (s[l].first == State::PLUS) {
+	double first_val = get_num(s[l].second);
+	double second_val = get_num(s[r].second);
+
+	if (s[m].first == State::PLUS)
 	    return {State::NUMBER, add_num(first_val + second_val)};
-	}
-	else if (s[l].first == State::MINUS)
+	else if (s[m].first == State::MINUS)
 	    return {State::NUMBER, add_num(first_val - second_val)};
-	else if (s[l].first == State::PRO)
+	else if (s[m].first == State::PRO)
 	    return {State::NUMBER, add_num(first_val * second_val)};
-	else if (s[l].first == State::DEV)
+	else if (s[m].first == State::DEV)
 	    return {State::NUMBER, add_num(first_val / second_val)};
-    } else if (len == 3) {
-	return s[l+1];
+	else
+	    error("error compose!");
     } else {
 	error("error compose!");
     }
@@ -114,6 +126,7 @@ pair<State, int> compose(int l, int r)
 
 extern void operator_first()
 {
+    init_opertor_order();
     int k = 0, j; s[k] = {State::FIN, -1};
     pair<State, int> cur_state, prev_equal_state;
     do {

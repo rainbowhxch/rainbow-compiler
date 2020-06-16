@@ -21,6 +21,8 @@ static pair<State, int> compose(int l, int r);
 
 static void error(string msg);
 
+extern void print_info_ope();
+
 extern void operator_first();
 
 #endif /* ifndef _OPERATOR_FIRST_H_ */

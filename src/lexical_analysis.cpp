@@ -73,7 +73,7 @@ void next_lexical()
 
         _retract();
         idents.push_back(lexical);
-        _state = {State::IDENT, idents.size()};
+        _state = {State::IDENT, idents.size()-1};
     } else if (isdigit(cur_char)) {
         while (isdigit(cur_char)) {
             cur_char = _next_char();
@@ -81,7 +81,7 @@ void next_lexical()
 
         _retract();
         nums.push_back(lexical);
-        _state = {State::NUMBER, nums.size()};
+        _state = {State::NUMBER, nums.size()-1};
     } else if (cur_char == '<') {
         cur_char = _next_char();
         if (cur_char != '>' || cur_char != '=') {
