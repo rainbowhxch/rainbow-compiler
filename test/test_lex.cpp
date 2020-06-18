@@ -11,6 +11,10 @@ int main(int argc, char *argv[])
         a = cur_lexical();
         if (a.first == State::FIN)
             break;
+	else if (a.first == State::ERROR) {
+	    cout << "Error occured!" << endl;
+	    break;
+	}
         cout << "<" << (int)a.first << ", " << a.second << ">" << endl;
     }
     return 0;

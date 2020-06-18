@@ -100,21 +100,27 @@ pair<State, int> compose(int l, int r)
     int len = r - l + 1;
     int m = l+1;
     if (len == 3) {
-	if (s[m].first == State::NUMBER)
+	if (s[m].first == State::NUMBER) {
+	    cout << "(NUMBER) -> NUMBER" << endl;
 	    return s[m];
+	}
 
 	double first_val = get_num(s[l].second);
 	double second_val = get_num(s[r].second);
 
-	if (s[m].first == State::PLUS)
+	if (s[m].first == State::PLUS) {
+	    cout << "NUMBER+NUMBER -> NUMBER" << endl;
 	    return {State::NUMBER, add_num(first_val + second_val)};
-	else if (s[m].first == State::MINUS)
+	} else if (s[m].first == State::MINUS) {
+	    cout << "NUMBER-NUMBER -> NUMBER" << endl;
 	    return {State::NUMBER, add_num(first_val - second_val)};
-	else if (s[m].first == State::PRO)
+	} else if (s[m].first == State::PRO) {
+	    cout << "NUMBER*NUMBER -> NUMBER" << endl;
 	    return {State::NUMBER, add_num(first_val * second_val)};
-	else if (s[m].first == State::DEV)
+	} else if (s[m].first == State::DEV) {
+	    cout << "NUMBER/NUMBER -> NUMBER" << endl;
 	    return {State::NUMBER, add_num(first_val / second_val)};
-	else
+	} else
 	    error("error compose!");
     } else {
 	error("error compose!");

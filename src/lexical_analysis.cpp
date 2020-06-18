@@ -67,6 +67,7 @@ void next_lexical()
                     _state = {State::KEY, -1};
                 else
                     _state = {State::ODD, -1};
+		return;
             }
             cur_char = _next_char();
         }
