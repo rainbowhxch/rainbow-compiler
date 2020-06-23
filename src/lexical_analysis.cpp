@@ -7,7 +7,7 @@ static vector<string> idents;
 static vector<string> nums;
 static const set<string> keys = { "begin", "end", "if", "then", "while", "do", \
                              "const", "var", "call", "procedure", "odd" };
-static pair<State, int> _state;
+static token _state;
 
 extern double get_num(int idx)
 {
@@ -45,7 +45,7 @@ static void _retract()
     lexical.pop_back();
 }
 
-const pair<State, int> cur_lexical()
+const token cur_lexical()
 {
     return _state;
 }

@@ -4,7 +4,7 @@ int main(int argc, char *argv[])
 {
     init_buffer("pl0_lex.txt");
     print_info();
-    pair<State, int> a;
+    token a;
     int n = 10;
     while (n--) {
 	next_lexical();

@@ -2,7 +2,6 @@
 #define _RECURSIVE_DESCENT_H_
 
 #include "lexical_analysis.h"
-#include <cstdlib>
 
 extern void E();
 

@@ -1,6 +1,15 @@
 #include "../include/operator_first.h"
 #include "../include/lexical_analysis.h"
-#include <cstdlib>
+#include <c++/10.1.0/x86_64-pc-linux-gnu/bits/c++config.h>
+
+static void init_compose_rule()
+{
+    compose_rule[LBRA_NUMBER_RBRA] = State::NUMBER;
+    compose_rule[NUMBER_PLUS_NUMBER] = State::PLUS;
+    compose_rule[NUMBER_MINUS_NUMBER] = State::MINUS;
+    compose_rule[NUMBER_PRO_NUMBER] = State::PRO;
+    compose_rule[NUMBER_DEV_NUMBER] = State::DEV;
+}
 
 static void init_opertor_order()
 {
@@ -63,16 +72,22 @@ static void init_opertor_order()
 
 static bool order_less_than(State a, State b)
 {
+    if (!is_final_state(a) || !is_final_state(b))
+	return false;
     return (_operator_order[(int)a][(int)b] == -1);
 }
 
 static bool order_large_than(State a, State b)
 {
+    if (!is_final_state(a) || !is_final_state(b))
+	return false;
     return (_operator_order[(int)a][(int)b] == 1);
 }
 
 static bool order_equal(State a, State b)
 {
+    if (!is_final_state(a) || !is_final_state(b))
+	return false;
     return (_operator_order[(int)a][(int)b] == 0);
 }
 
@@ -87,6 +102,13 @@ static bool is_final_state(State s)
 	return false;
 }
 
+static State is_can_compose(string compose_array)
+{
+    if (compose_rule.count(compose_array) == 0)
+	return State::ERROR;
+    return compose_rule[compose_array];
+}
+
 void print_info_ope()
 {
     _operator_order[(int)State::PLUS][(int)State::LBRA] = -1;
@@ -95,35 +117,40 @@ void print_info_ope()
     cout << _operator_order[(int)State::PLUS][(int)State::LBRA] << endl;
 }
 
-pair<State, int> compose(int l, int r)
+token compose(int l, int r)
 {
-    int len = r - l + 1;
-    int m = l+1;
-    if (len == 3) {
-	if (s[m].first == State::NUMBER) {
-	    cout << "(NUMBER) -> NUMBER" << endl;
-	    return s[m];
-	}
+    string compose_array;
+    int tmp_l = l;
+    while (tmp_l <= r) {
+	compose_array.push_back((int)s[tmp_l].first - 1 + '0');
+	tmp_l++;
+    }
 
+    State tmp = is_can_compose(compose_array);
+    if (tmp == State::NUMBER) {
+	cout << "(NUMBER) -> NUMBER" << endl;
+	return s[l+1];
+    } else if (tmp == State::ERROR) {
+	error("error compose!");
+    } else {
 	double first_val = get_num(s[l].second);
 	double second_val = get_num(s[r].second);
+	double result;
 
-	if (s[m].first == State::PLUS) {
+	if (tmp == State::PLUS) {
 	    cout << "NUMBER+NUMBER -> NUMBER" << endl;
-	    return {State::NUMBER, add_num(first_val + second_val)};
-	} else if (s[m].first == State::MINUS) {
+	    result = first_val + second_val;
+	} else if (tmp == State::MINUS) {
 	    cout << "NUMBER-NUMBER -> NUMBER" << endl;
-	    return {State::NUMBER, add_num(first_val - second_val)};
-	} else if (s[m].first == State::PRO) {
+	    result = first_val - second_val;
+	} else if (tmp == State::PRO) {
 	    cout << "NUMBER*NUMBER -> NUMBER" << endl;
-	    return {State::NUMBER, add_num(first_val * second_val)};
-	} else if (s[m].first == State::DEV) {
+	    result = first_val * second_val;
+	} else {
 	    cout << "NUMBER/NUMBER -> NUMBER" << endl;
-	    return {State::NUMBER, add_num(first_val / second_val)};
-	} else
-	    error("error compose!");
-    } else {
-	error("error compose!");
+	    result = first_val / second_val;
+	}
+	return {State::NUMBER, add_num(result)};
     }
 
     /* just for removing the warning */
@@ -133,8 +160,9 @@ pair<State, int> compose(int l, int r)
 extern void operator_first()
 {
     init_opertor_order();
+    init_compose_rule();
     int k = 0, j; s[k] = {State::FIN, -1};
-    pair<State, int> cur_state, prev_equal_state;
+    token cur_state, prev_equal_state;
     do {
 	next_lexical();
 	cur_state = cur_lexical();
